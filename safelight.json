@@ -1,0 +1,14 @@
+{
+  "id": "safelight.effects",
+  "name": "Effects",
+  "version": "3.0.0",
+  "description": "Vignette and grain.",
+  "author": "Anthony Reimche",
+  "main": "dist/index.js",
+  "license": "GPL-3.0-only",
+  "categories": ["look"],
+  "keywords": ["vignette", "grain", "film grain", "effects"],
+  "repository": "anthonyreimche/effects",
+  "worksWith": ["anthonyreimche/Develop"],
+  "minAppVersion": "3.2.0"
+}
