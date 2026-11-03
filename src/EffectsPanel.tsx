@@ -39,6 +39,7 @@ function Section<G extends Group>({
             min={s.min}
             max={s.max}
             step={s.step}
+            defaultValue={s.default}
             onChange={(v) => setParam(group, { ...values, [s.field]: v })}
             onCommit={() => void commitEdit(`${title} ${s.label}`)}
           />

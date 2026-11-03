@@ -119,6 +119,8 @@ export interface SliderProps {
   min?: number;
   max?: number;
   step?: number;
+  /** What a double-click resets to; core's Slider resets to 0 without it. */
+  defaultValue?: number;
   onChange(value: number): void;
   onCommit?(): void;
 }

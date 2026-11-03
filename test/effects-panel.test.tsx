@@ -1,6 +1,7 @@
 // The panel draws core's Panel, closed by default, with a Vignette and a Grain
 // section of core Sliders over the photo's params, as core's Effects panel did.
-// A drag writes the whole group back; its end is one undoable step.
+// A drag writes the whole group back; its end is one undoable step. A
+// double-click resets a slider to core's default for its field.
 
 import { act, cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
@@ -40,8 +41,17 @@ describe("EffectsPanel", () => {
       ["Amount", 0, 0, 100, 1],
       ["Size", 25, 25, 100, 1],
       ["Roughness", 50, 0, 100, 1],
-      ["Color", 0, 0, 100, 1],
+      ["Colour", 0, 0, 100, 1],
     ]);
+  });
+
+  it("resets each slider to core's default for its field", () => {
+    const { rig, view } = setup();
+    const defaults = [
+      ...Object.values(DEFAULT_PARAMS.vignette),
+      ...Object.values(DEFAULT_PARAMS.grain),
+    ];
+    expect(rig.sliders(view.container).map((s) => s.defaultValue)).toEqual(defaults);
   });
 
   it("writes the whole group when a slider moves", () => {

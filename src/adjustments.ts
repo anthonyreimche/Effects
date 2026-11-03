@@ -6,6 +6,8 @@
 // The panel's sliders, as core's NESTED_ADJUSTMENTS lists them
 // (src/state/develop-adjustments.ts): the same fields, labels and ranges, so a
 // slider stops where core's adjustment list (Speed Edit, api.develop) does.
+// Each default is core's DEFAULT_VIGNETTE / DEFAULT_GRAIN value
+// (src/catalog/defaults.ts), which a double-click resets the slider to.
 
 import type { GrainParams, VignetteParams } from "./safelight";
 
@@ -15,19 +17,20 @@ export interface SliderSpec<K extends string> {
   min: number;
   max: number;
   step: number;
+  default: number;
 }
 
 export const VIGNETTE_SLIDERS: readonly SliderSpec<keyof VignetteParams>[] = [
-  { field: "amount", label: "Amount", min: -100, max: 100, step: 1 },
-  { field: "midpoint", label: "Midpoint", min: 0, max: 100, step: 1 },
-  { field: "roundness", label: "Roundness", min: -100, max: 100, step: 1 },
-  { field: "feather", label: "Feather", min: 0, max: 100, step: 1 },
-  { field: "highlights", label: "Highlights", min: 0, max: 100, step: 1 },
+  { field: "amount", label: "Amount", min: -100, max: 100, step: 1, default: 0 },
+  { field: "midpoint", label: "Midpoint", min: 0, max: 100, step: 1, default: 50 },
+  { field: "roundness", label: "Roundness", min: -100, max: 100, step: 1, default: 0 },
+  { field: "feather", label: "Feather", min: 0, max: 100, step: 1, default: 50 },
+  { field: "highlights", label: "Highlights", min: 0, max: 100, step: 1, default: 0 },
 ];
 
 export const GRAIN_SLIDERS: readonly SliderSpec<keyof GrainParams>[] = [
-  { field: "amount", label: "Amount", min: 0, max: 100, step: 1 },
-  { field: "size", label: "Size", min: 25, max: 100, step: 1 },
-  { field: "roughness", label: "Roughness", min: 0, max: 100, step: 1 },
-  { field: "color", label: "Color", min: 0, max: 100, step: 1 },
+  { field: "amount", label: "Amount", min: 0, max: 100, step: 1, default: 0 },
+  { field: "size", label: "Size", min: 25, max: 100, step: 1, default: 25 },
+  { field: "roughness", label: "Roughness", min: 0, max: 100, step: 1, default: 50 },
+  { field: "color", label: "Colour", min: 0, max: 100, step: 1, default: 0 },
 ];
