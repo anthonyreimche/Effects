@@ -5,35 +5,40 @@ var e = [
 		label: "Amount",
 		min: -100,
 		max: 100,
-		step: 1
+		step: 1,
+		default: 0
 	},
 	{
 		field: "midpoint",
 		label: "Midpoint",
 		min: 0,
 		max: 100,
-		step: 1
+		step: 1,
+		default: 50
 	},
 	{
 		field: "roundness",
 		label: "Roundness",
 		min: -100,
 		max: 100,
-		step: 1
+		step: 1,
+		default: 0
 	},
 	{
 		field: "feather",
 		label: "Feather",
 		min: 0,
 		max: 100,
-		step: 1
+		step: 1,
+		default: 50
 	},
 	{
 		field: "highlights",
 		label: "Highlights",
 		min: 0,
 		max: 100,
-		step: 1
+		step: 1,
+		default: 0
 	}
 ], t = [
 	{
@@ -41,28 +46,32 @@ var e = [
 		label: "Amount",
 		min: 0,
 		max: 100,
-		step: 1
+		step: 1,
+		default: 0
 	},
 	{
 		field: "size",
 		label: "Size",
 		min: 25,
 		max: 100,
-		step: 1
+		step: 1,
+		default: 25
 	},
 	{
 		field: "roughness",
 		label: "Roughness",
 		min: 0,
 		max: 100,
-		step: 1
+		step: 1,
+		default: 50
 	},
 	{
 		field: "color",
-		label: "Color",
+		label: "Colour",
 		min: 0,
 		max: 100,
-		step: 1
+		step: 1,
+		default: 0
 	}
 ], n, r;
 function i(e) {
@@ -95,6 +104,7 @@ function l({ group: e, title: t, sliders: i }) {
 		min: r.min,
 		max: r.max,
 		step: r.step,
+		defaultValue: r.default,
 		onChange: (t) => l(e, {
 			...c,
 			[r.field]: t
