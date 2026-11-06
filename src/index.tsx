@@ -21,7 +21,7 @@ export const LINE = __SAFELIGHT_LINE__ as Line;
 
 export function activate(host: SafelightAPI): void {
   initRuntime(host);
-  host.registerStylesheet({ id: STYLESHEET_ID, css: effectsCss() });
+  host.registerStylesheet({ id: STYLESHEET_ID, css: effectsCss(host.ui.tokens) });
   for (const stage of effectsStages(LINE)) host.registerProcessingStage(stage);
   host.registerPanel({
     id: PANEL_ID,

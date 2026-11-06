@@ -86,6 +86,7 @@ export function fakeApi(params: Partial<DevelopParams> = {}): Rig {
     registerStylesheet: (c) => void stylesheets.push(c),
     components: { Panel, Slider },
     stores: { useDevelopStore: develop },
+    ui: { tokens: { textMuted: "var(--color-text-muted)" } },
   };
 
   return {

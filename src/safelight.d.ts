@@ -125,10 +125,16 @@ export interface SliderProps {
   onCommit?(): void;
 }
 
+/** The theme's CSS variables as `var(--color-…)` strings. */
+export interface UiTokens {
+  readonly textMuted: string;
+}
+
 export interface SafelightAPI {
   version: 1;
   extensionId: string;
   react: typeof import("react");
+  ui: { tokens: UiTokens };
   registerPanel(c: PanelContribution): void;
   registerProcessingStage(c: ProcessingStageContribution): void;
   registerStylesheet(c: StylesheetContribution): void;

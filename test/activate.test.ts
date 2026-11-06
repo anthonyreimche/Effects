@@ -53,4 +53,11 @@ describe("activate", () => {
     expect(rig.stylesheets.map((s) => s.id)).toEqual([STYLESHEET_ID]);
     expect(rig.stylesheets[0].css).toContain(".safelight-effects-heading");
   });
+
+  it("colours the group headings with the theme's muted text", () => {
+    const rig = fakeApi();
+    activate(rig.api);
+    const heading = rig.stylesheets[0].css.split("\n").find((l) => l.startsWith(":where(.safelight-effects-heading)"));
+    expect(heading).toContain("color: var(--color-text-muted);");
+  });
 });

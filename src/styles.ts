@@ -6,8 +6,11 @@
 // The look core gave the Effects panel with Tailwind utilities, as plain CSS
 // (the app's Tailwind build never scans an extension). `:where()` drops every
 // rule to zero specificity, so a stylesheet that restyles the panel wins over
-// them. The `html.sl-larger-text` and `html.sl-title-headings` rules repeat
-// core's Accessibility rules for 10 px, uppercase and widely tracked text.
+// them. The group headings take the theme's muted text colour. The
+// `html.sl-larger-text` and `html.sl-title-headings` rules repeat core's
+// Accessibility rules for 10 px, uppercase and widely tracked text.
+
+import type { UiTokens } from "./safelight";
 
 const P = "safelight-effects";
 
@@ -17,13 +20,10 @@ export const cls = {
   sliders: `${P}-sliders`,
 } as const;
 
-/** Tailwind's neutral-500, which core's section headings used. */
-const HEADING_GREY = "#737373";
-
-export function effectsCss(): string {
+export function effectsCss(t: UiTokens): string {
   return `
 :where(.${cls.sections} > :not(:last-child)) { margin-block: 0 0.25rem; }
-:where(.${cls.heading}) { padding: 0.5rem 0.5rem 0.125rem; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: ${HEADING_GREY}; }
+:where(.${cls.heading}) { padding: 0.5rem 0.5rem 0.125rem; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: ${t.textMuted}; }
 :where(.${cls.sliders} > :not(:last-child)) { margin-block: 0 0.125rem; }
 html.sl-larger-text .${cls.heading} { font-size: 12px !important; text-transform: none !important; letter-spacing: normal !important; }
 html.sl-title-headings .${cls.heading} { text-transform: capitalize !important; }
