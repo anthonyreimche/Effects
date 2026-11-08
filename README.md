@@ -18,6 +18,10 @@ photos keep their vignette and grain settings. While the extension is off or
 uninstalled, those photos show without their effects; Develop says so and
 offers to bring it back.
 
+## Resting blocks
+
+From 3.1.0, on Safelight 3.2.1 or newer, the live view leaves Vignette and Grain out of the develop shader while their Amount is 0, whatever their other sliders say, on every line. The picture is the same either way, and thumbnails and exports always run both.
+
 ## Release lines
 
 A release's major version is its line: the process version its effects were

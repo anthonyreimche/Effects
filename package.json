@@ -1,13 +1,14 @@
 {
   "name": "safelight-effects",
   "private": true,
-  "version": "3.0.2",
+  "version": "3.1.0",
   "description": "Effects extension for Safelight: vignette and grain.",
   "type": "module",
   "scripts": {
     "build": "vite build",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
+    "test:gpu": "node test/gpu/run.cjs",
     "check": "npm run typecheck && npm run build && npm test"
   },
   "devDependencies": {

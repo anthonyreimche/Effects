@@ -37,6 +37,64 @@ const PARAMS: DevelopParams = {
   grain: { amount: 30, size: 60, roughness: 80, color: 25 },
 };
 
+describe("dormantWhen", () => {
+  const AT_REST: DevelopParams = {
+    vignette: { amount: 0, midpoint: 50, roundness: 0, feather: 50, highlights: 0 },
+    grain: { amount: 0, size: 25, roughness: 50, color: 0 },
+  };
+  const RULES = [
+    [VIGNETTE_STAGE_ID, { uVignetteAmount: 0 }],
+    [GRAIN_STAGE_ID, { uGrainAmount: 0 }],
+  ] as const;
+
+  /** Whether the stage's rule holds for the params, as the stage derives them. */
+  const holds = (line: Line, id: string, params: DevelopParams): boolean => {
+    const stage = effectsStages(line).find((s) => s.id === id);
+    const rule = Object.entries(stage?.dormantWhen ?? {});
+    expect(rule).not.toEqual([]);
+    const derived: Record<string, unknown> = stage?.derive?.(params) ?? {};
+    return rule.every(([key, value]) => derived[key] === value);
+  };
+
+  // Both helpers return before touching the pixel at amount 0, ahead of line
+  // 1's closing clip, so every line can sleep.
+  it.each(RULES.flatMap(([id, rule]) => ([1, 2, 3] as const).map((line) => [line, id, rule] as const)))(
+    "lets line %i's %s sleep at amount 0",
+    (line, id, rule) => {
+      expect(effectsStages(line).find((s) => s.id === id)?.dormantWhen).toEqual(rule);
+    },
+  );
+
+  it.each(RULES.flatMap(([id, rule]) => ([1, 2, 3] as const).map((line) => [line, id, rule] as const)))(
+    "names a float uniform line %i's %s declares, and no array",
+    (line, id, rule) => {
+      const stage = effectsStages(line).find((s) => s.id === id);
+      for (const key of Object.keys(rule)) {
+        const uniform = stage?.uniforms.find((u) => u.key === key);
+        expect(uniform?.glslType).toBe("float");
+        expect(uniform).not.toHaveProperty("length");
+      }
+    },
+  );
+
+  it.each(RULES.map(([id]) => [id] as const))("lets %s keep its other settings while asleep", (id) => {
+    const shaped: DevelopParams = {
+      vignette: { amount: 0, midpoint: 20, roundness: -60, feather: 90, highlights: 70 },
+      grain: { amount: 0, size: 90, roughness: 100, color: 80 },
+    };
+    expect(holds(3, id, AT_REST)).toBe(true);
+    expect(holds(3, id, shaped)).toBe(true);
+  });
+
+  it.each([
+    [VIGNETTE_STAGE_ID, { ...AT_REST, vignette: { ...AT_REST.vignette, amount: -0.5 } }],
+    [VIGNETTE_STAGE_ID, { ...AT_REST, vignette: { ...AT_REST.vignette, amount: 40 } }],
+    [GRAIN_STAGE_ID, { ...AT_REST, grain: { ...AT_REST.grain, amount: 1 } }],
+  ])("breaks %s for an amount that does something", (id, params) => {
+    expect(holds(3, id, params)).toBe(false);
+  });
+});
+
 describe("effectsStages", () => {
   it.each([1, 2, 3] as const)("registers line %i's text as the app froze it", (line) => {
     const got = Object.fromEntries(effectsStages(line).map((s) => [s.id, sha256(stageText(s))]));

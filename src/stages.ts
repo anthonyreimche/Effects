@@ -56,6 +56,9 @@ function vignette(line: Line): ProcessingStageContribution {
       { key: "uVignetteFeather", glslType: "float", default: 50, range: { min: 0, max: 100 }, label: "Feather" },
       { key: "uVignetteHighlights", glslType: "float", default: 0, range: { min: 0, max: 100 }, label: "Highlights" },
     ],
+    // applyVignette returns the pixel as it came at amount 0 (ahead of line 1's
+    // clip), whatever the other settings are.
+    dormantWhen: { uVignetteAmount: 0 },
     derive: ({ vignette: v }) => ({
       uVignetteAmount: v.amount,
       uVignetteMidpoint: v.midpoint,
@@ -137,6 +140,9 @@ vec3 applyGrain(vec3 c, vec2 uv) {
       { key: "uGrainRoughness", glslType: "float", default: 50, range: { min: 0, max: 100 }, label: "Roughness" },
       { key: "uGrainColor", glslType: "float", default: 0, range: { min: 0, max: 100 }, label: "Color" },
     ],
+    // applyGrain returns the pixel as it came at amount 0 (ahead of line 1's
+    // clip), whatever the other settings are.
+    dormantWhen: { uGrainAmount: 0 },
     derive: ({ grain: g }) => ({
       uGrainAmount: g.amount,
       uGrainSize: g.size,
