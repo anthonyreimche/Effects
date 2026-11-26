@@ -1,7 +1,7 @@
 {
   "id": "safelight.effects",
   "name": "Effects",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "Vignette and grain.",
   "author": "Anthony Reimche",
   "main": "dist/index.js",

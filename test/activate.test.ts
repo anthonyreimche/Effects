@@ -20,6 +20,7 @@ describe("activate", () => {
         title: "Effects",
         component: EffectsPanel,
         defaultDock: { module: "develop", direction: "right", order: 10, width: 280, height: 150 },
+        modules: ["develop"],
         onReset: expect.any(Function),
       },
     ]);

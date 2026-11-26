@@ -83,11 +83,11 @@ var a = "safelight-effects", o = {
 	sections: `${a}-sections`,
 	heading: `${a}-heading`,
 	sliders: `${a}-sliders`
-}, s = "#737373";
-function c() {
+};
+function s(e) {
 	return `
 :where(.${o.sections} > :not(:last-child)) { margin-block: 0 0.25rem; }
-:where(.${o.heading}) { padding: 0.5rem 0.5rem 0.125rem; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: ${s}; }
+:where(.${o.heading}) { padding: 0.5rem 0.5rem 0.125rem; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: ${e.textMuted}; }
 :where(.${o.sliders} > :not(:last-child)) { margin-block: 0 0.125rem; }
 html.sl-larger-text .${o.heading} { font-size: 12px !important; text-transform: none !important; letter-spacing: normal !important; }
 html.sl-title-headings .${o.heading} { text-transform: capitalize !important; }
@@ -95,7 +95,7 @@ html.sl-title-headings .${o.heading} { text-transform: capitalize !important; }
 }
 //#endregion
 //#region src/EffectsPanel.tsx
-function l({ group: e, title: t, sliders: i }) {
+function c({ group: e, title: t, sliders: i }) {
 	let { Slider: a } = r.components, s = r.stores.useDevelopStore, c = s((t) => t.params[e]), l = s((e) => e.setParam), u = s((e) => e.commitEdit);
 	return /* @__PURE__ */ n.createElement("div", null, /* @__PURE__ */ n.createElement("div", { className: o.heading }, t), /* @__PURE__ */ n.createElement("div", { className: o.sliders }, i.map((r) => /* @__PURE__ */ n.createElement(a, {
 		key: r.field,
@@ -112,16 +112,16 @@ function l({ group: e, title: t, sliders: i }) {
 		onCommit: () => void u(`${t} ${r.label}`)
 	}))));
 }
-function u() {
+function l() {
 	let { Panel: i } = r.components;
 	return /* @__PURE__ */ n.createElement(i, {
 		title: "Effects",
 		defaultOpen: !1
-	}, /* @__PURE__ */ n.createElement("div", { className: o.sections }, /* @__PURE__ */ n.createElement(l, {
+	}, /* @__PURE__ */ n.createElement("div", { className: o.sections }, /* @__PURE__ */ n.createElement(c, {
 		group: "vignette",
 		title: "Vignette",
 		sliders: e
-	}), /* @__PURE__ */ n.createElement(l, {
+	}), /* @__PURE__ */ n.createElement(c, {
 		group: "grain",
 		title: "Grain",
 		sliders: t
@@ -129,10 +129,10 @@ function u() {
 }
 //#endregion
 //#region src/stages.ts
-var d = "safelight.effects.vignette", f = "safelight.effects.grain", p = (e) => e === 1 ? "return clamp(c, 0.0, 1.0);" : "return c;";
-function m(e) {
+var u = "safelight.effects.vignette", d = "safelight.effects.grain", f = (e) => e === 1 ? "return clamp(c, 0.0, 1.0);" : "return c;";
+function p(e) {
 	return {
-		id: d,
+		id: u,
 		name: "Vignette",
 		phase: "effects",
 		priority: 50,
@@ -159,7 +159,7 @@ function m(e) {
     : 0.0;
   darkening *= (1.0 - hlProtect);
   c = c * (1.0 - darkening) + c * lightening;
-  ${p(e)}
+  ${f(e)}
 }`,
 		uniforms: [
 			{
@@ -213,6 +213,7 @@ function m(e) {
 				label: "Highlights"
 			}
 		],
+		dormantWhen: { uVignetteAmount: 0 },
 		derive: ({ vignette: e }) => ({
 			uVignetteAmount: e.amount,
 			uVignetteMidpoint: e.midpoint,
@@ -222,9 +223,9 @@ function m(e) {
 		})
 	};
 }
-function h(e) {
+function m(e) {
 	return {
-		id: f,
+		id: d,
 		name: "Grain",
 		phase: "effects",
 		priority: 60,
@@ -285,7 +286,7 @@ vec3 applyGrain(vec3 c, vec2 uv) {
     c.g += nG * sigma;
     c.b += nB * sigma;
   }
-  ${p(e)}
+  ${f(e)}
 }`,
 		uniforms: [
 			{
@@ -329,6 +330,7 @@ vec3 applyGrain(vec3 c, vec2 uv) {
 				label: "Color"
 			}
 		],
+		dormantWhen: { uGrainAmount: 0 },
 		derive: ({ grain: e }) => ({
 			uGrainAmount: e.amount,
 			uGrainSize: e.size,
@@ -337,22 +339,22 @@ vec3 applyGrain(vec3 c, vec2 uv) {
 		})
 	};
 }
-function g(e) {
-	return [m(e), h(e)];
+function h(e) {
+	return [p(e), m(e)];
 }
 //#endregion
 //#region src/index.tsx
-var _ = "core.effects", v = "safelight.effects.styles", y = 3;
-function b(e) {
+var g = "core.effects", _ = "safelight.effects.styles", v = 3;
+function y(e) {
 	i(e), e.registerStylesheet({
-		id: v,
-		css: c()
-	});
-	for (let t of g(3)) e.registerProcessingStage(t);
-	e.registerPanel({
 		id: _,
+		css: s(e.ui.tokens)
+	});
+	for (let t of h(3)) e.registerProcessingStage(t);
+	e.registerPanel({
+		id: g,
 		title: "Effects",
-		component: u,
+		component: l,
 		defaultDock: {
 			module: "develop",
 			direction: "right",
@@ -360,10 +362,11 @@ function b(e) {
 			width: 280,
 			height: 150
 		},
+		modules: ["develop"],
 		onReset: () => void e.stores.useDevelopStore.getState().resetParams(["vignette", "grain"], "Reset Effects")
 	});
 }
 //#endregion
-export { y as LINE, _ as PANEL_ID, v as STYLESHEET_ID, b as activate };
+export { v as LINE, g as PANEL_ID, _ as STYLESHEET_ID, y as activate };
 
 //# sourceMappingURL=index.js.map
